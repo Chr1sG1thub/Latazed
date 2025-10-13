@@ -102,15 +102,15 @@ function displaySavedDates() {
     xinputDate = formatDate(xinputDate);
     xdate21 = formatDate(xdate21);
     xdate28 = formatDate(xdate28);
-    let col28 = data.daysUntil28 > 0 ? "red" : "green";
-    let col21 = data.daysUntil21 > 0 ? "red" : "green";
+    let col28 = data.daysUntil28 > 0 ? "lightPink" : "lightGreen";
+    let col21 = data.daysUntil21 > 0 ? "lightPink" : "lightGreen";
 
     html += `<tr>
       <td>${xinputDate}</td>
-      <td style="color: ${col28}">${xdate28}</td>
-      <td>${data.daysUntil28}</td>
-      <td style="color: ${col21}">${xdate21}</td>
-      <td>${data.daysUntil21}</td>
+      <td style="background-color: ${col28}">${xdate28}</td>
+      <td style="background-color: ${col28}">${data.daysUntil28}</td>
+      <td style="background-color: ${col21}">${xdate21}</td>
+      <td style="background-color: ${col21}">${data.daysUntil21}</td>
       <td><button onclick="removeDate(${idx})">-</button></td>
     </tr>`;
   });
