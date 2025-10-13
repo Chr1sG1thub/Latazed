@@ -104,10 +104,10 @@ function displaySavedDates() {
     xdate28 = formatDate(xdate28);
 
     html += `<tr>
-      <td>${data.xinputDate}</td>
-      <td>${data.xdate21}</td>
+      <td>${xinputDate}</td>
+      <td>${xdate21}</td>
       <td>${data.daysUntil21} ${data.daysUntil21 >= 0 ? 'remaining' : 'ago'}</td>
-      <td>${data.xdate28}</td>
+      <td>${xdate28}</td>
       <td>${data.daysUntil28} ${data.daysUntil28 >= 0 ? 'remaining' : 'ago'}</td>
       <td><button onclick="removeDate(${idx})">Remove</button></td>
     </tr>`;
