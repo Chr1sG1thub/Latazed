@@ -22,17 +22,6 @@
     cursor: pointer;
   }
 </style>
-</head>
-<body>
-  <h2>Date Calculator</h2>
-  
-  <label for="inputDate">Enter a date:</label>
-  <input type="date" id="inputDate" />
-  <button onclick="addDate()">Add Date</button>
-
-  <h3>Saved Dates:</h3>
-  <div id="savedDates"></div>
-
 <script>
 function getDataArray() {
   const arr = localStorage.getItem('dateCalcDataArray');
@@ -124,6 +113,17 @@ function removeDate(index) {
 
 window.onload = displaySavedDates;
 </script>
+</head>
+<body>
+  <h2>Date Calculator</h2>
+  
+  <label for="inputDate">Enter a date:</label>
+  <input type="date" id="inputDate" />
+  <button onclick="addDate()">Add Date</button>
+
+  <h3>Saved Dates:</h3>
+  <div id="savedDates"></div>
+
 
 </body>
 </html>
