@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Date Calculator</title>
+</head>
+<body>
+  <h2>Date Calculator</h2>
+  
+  <label for="inputDate">Enter a date:</label>
+  <input type="date" id="inputDate" />
+  <button onclick="calculateDates()">Calculate</button>
+
+  <div id="results" style="margin-top: 20px;"></div>
+
+<script>
+  function calculateDates() {
+    const inputDateStr = document.getElementById('inputDate').value;
+    if(!inputDateStr) {
+      alert('Please enter a date.');
+      return;
+    }
+    
+    const inputDate = new Date(inputDateStr);
+    const date21 = new Date(inputDate);
+    date21.setDate(date21.getDate() + 21);
+    const date28 = new Date(inputDate);
+    date28.setDate(date28.getDate() + 28);
+    
+    const today = new Date();
+    
+    // Calculate days until dates (rounded down)
+    const daysUntil21 = Math.floor((date21 - today) / (1000 * 60 * 60 * 24));
+    const daysUntil28 = Math.floor((date28 - today) / (1000 * 60 * 60 * 24));
+    
+    // Store dates and days in localStorage
+    const data = {
+      inputDate: inputDateStr,
+      date21: date21.toISOString().substring(0,10),
+      daysUntil21,
+      date28: date28.toISOString().substring(0,10),
+      daysUntil28
+    };
+    localStorage.setItem('dateCalcData', JSON.stringify(data));
+    
+    displayResults(data);
+  }
+
+  function displayResults(data) {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = `
+      <p>Date 21 days later: ${data.date21} (${data.daysUntil21} days ${data.daysUntil21 >= 0 ? 'remaining' : 'ago'})</p>
+      <p>Date 28 days later: ${data.date28} (${data.daysUntil28} days ${data.daysUntil28 >= 0 ? 'remaining' : 'ago'})</p>
+    `;
+  }
+  
+  // Load stored data on page load and display
+  window.onload = () => {
+    const savedData = localStorage.getItem('dateCalcData');
+    if(savedData) {
+      displayResults(JSON.parse(savedData));
+      document.getElementById('inputDate').value = JSON.parse(savedData).inputDate;
+    }
+  };
+</script>
+
+</body>
+</html>
