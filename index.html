@@ -2,88 +2,61 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Date Calculator History</title>
+<title>Date Calculator - Table Display</title>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1em;
+  }
+  th, td {
+    border: 1px solid #999;
+    padding: 0.5em 1em;
+    text-align: center;
+  }
+  th {
+    background-color: #eee;
+  }
+  button {
+    padding: 0.3em 0.6em;
+    cursor: pointer;
+  }
+</style>
 </head>
 <body>
-  <h2>Date Calculator with History</h2>
+  <h2>Date Calculator</h2>
   
   <label for="inputDate">Enter a date:</label>
   <input type="date" id="inputDate" />
   <button onclick="addDate()">Add Date</button>
 
-  <div id="results" style="margin-top: 20px;"></div>
+  <h3>Saved Dates:</h3>
+  <div id="savedDates"></div>
 
 <script>
-  function calculateDays(inputDateStr) {
-    const inputDate = new Date(inputDateStr);
-    const date21 = new Date(inputDate);
-    date21.setDate(date21.getDate() + 21);
-    const date28 = new Date(inputDate);
-    date28.setDate(date28.getDate() + 28);
-    
-    const today = new Date();
-    const daysUntil21 = Math.floor((date21 - today) / (1000 * 60 * 60 * 24));
-    const daysUntil28 = Math.floor((date28 - today) / (1000 * 60 * 60 * 24));
-    
-    return {
-      inputDate: inputDateStr,
-      date21: date21.toISOString().substring(0,10),
-      daysUntil21,
-      date28: date28.toISOString().substring(0,10),
-      daysUntil28
-    };
-  }
+function getDataArray() {
+  const arr = localStorage.getItem('dateCalcDataArray');
+  if (arr) return JSON.parse(arr);
+  return [];
+}
 
-  function addDate() {
-    const inputDateStr = document.getElementById('inputDate').value;
-    if(!inputDateStr) {
-      alert('Please enter a date.');
-      return;
-    }
-    
-    let savedDates = JSON.parse(localStorage.getItem('dateCalcList') || '[]');
-    // Calculate new date info
-    const newEntry = calculateDays(inputDateStr);
-    
-    // Add new entry to saved list
-    savedDates.push(newEntry);
-    // Save back to localStorage
-    localStorage.setItem('dateCalcList', JSON.stringify(savedDates));
-    
-    // Clear input field
-    document.getElementById('inputDate').value = '';
-    
-    // Refresh display
-    displayResults();
-  }
+function setDataArray(arr) {
+  localStorage.setItem('dateCalcDataArray', JSON.stringify(arr));
+}
 
-  function displayResults() {
-    const resultsDiv = document.getElementById('results');
-    let savedDates = JSON.parse(localStorage.getItem('dateCalcList') || '[]');
-    
-    if(savedDates.length === 0) {
-      resultsDiv.innerHTML = '<p>No dates entered yet.</p>';
-      return;
-    }
-    
-    // Build HTML for all stored dates
-    let html = '<h3>Previously Entered Dates</h3><ul>';
-    savedDates.forEach(entry => {
-      html += `
-        <li>
-          <strong>Input Date:</strong> ${entry.inputDate}<br />
-          21 days later: ${entry.date21} (${entry.daysUntil21} days ${entry.daysUntil21 >= 0 ? 'remaining' : 'ago'})<br />
-          28 days later: ${entry.date28} (${entry.daysUntil28} days ${entry.daysUntil28 >= 0 ? 'remaining' : 'ago'})
-        </li><br />
-      `;
-    });
-    html += '</ul>';
-    resultsDiv.innerHTML = html;
-  }
+function calculateForDate(inputDateStr) {
+  const inputDate = new Date(inputDateStr);
+  const date21 = new Date(inputDate);
+  date21.setDate(date21.getDate() + 21);
+  const date28 = new Date(inputDate);
+  date28.setDate(date28.getDate() + 28);
 
-  // Load and show saved dates at startup
-  window.onload = displayResults;
-</script>
+  const today = new Date();
+  const daysUntil21 = Math.floor((date21 - today) / (1000 * 60 * 60 * 24));
+  const daysUntil28 = Math.floor((date28 - today) / (1000 * 60 * 60 * 24));
 
-</body>
-</html>
+  return {
+    inputDate: inputDateStr,
+    date21: date21.toISOString().substring(0,10),
+    daysUntil21,
+    date28: date28.toISOString().substring(0,10),
