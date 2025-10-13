@@ -60,3 +60,70 @@ function calculateForDate(inputDateStr) {
     date21: date21.toISOString().substring(0,10),
     daysUntil21,
     date28: date28.toISOString().substring(0,10),
+    daysUntil28
+  };
+}
+
+function addDate() {
+  const inputDateStr = document.getElementById('inputDate').value;
+  if(!inputDateStr) {
+    alert('Please enter a date.');
+    return;
+  }
+  let arr = getDataArray();
+  if (arr.some(entry => entry.inputDate === inputDateStr)) {
+    alert("Date already saved.");
+    return;
+  }
+  const data = calculateForDate(inputDateStr);
+  arr.push(data);
+  setDataArray(arr);
+  displaySavedDates();
+}
+
+function displaySavedDates() {
+  const arr = getDataArray();
+  const div = document.getElementById('savedDates');
+  if (!arr.length) {
+    div.innerHTML = "<p>No dates entered yet.</p>";
+    return;
+  }
+  let html = `<table>
+    <thead>
+      <tr>
+        <th>Entered Date</th>
+        <th>21 Days Later</th>
+        <th>Days Until 21</th>
+        <th>28 Days Later</th>
+        <th>Days Until 28</th>
+        <th>Remove</th>
+      </tr>
+    </thead><tbody>`;
+  
+  arr.forEach((data, idx) => {
+    html += `<tr>
+      <td>${data.inputDate}</td>
+      <td>${data.date21}</td>
+      <td>${data.daysUntil21} ${data.daysUntil21 >= 0 ? 'remaining' : 'ago'}</td>
+      <td>${data.date28}</td>
+      <td>${data.daysUntil28} ${data.daysUntil28 >= 0 ? 'remaining' : 'ago'}</td>
+      <td><button onclick="removeDate(${idx})">Remove</button></td>
+    </tr>`;
+  });
+  
+  html += `</tbody></table>`;
+  div.innerHTML = html;
+}
+
+function removeDate(index) {
+  let arr = getDataArray();
+  arr.splice(index, 1);
+  setDataArray(arr);
+  displaySavedDates();
+}
+
+window.onload = displaySavedDates;
+</script>
+
+</body>
+</html>
