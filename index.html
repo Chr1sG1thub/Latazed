@@ -23,6 +23,12 @@
   }
 </style>
 <script>
+unction formatDate(date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
 function getDataArray() {
   const arr = localStorage.getItem('dateCalcDataArray');
   if (arr) return JSON.parse(arr);
@@ -91,7 +97,7 @@ function displaySavedDates() {
   
   arr.forEach((data, idx) => {
     html += `<tr>
-      <td>${data.inputDate}</td>
+      <td>${formatDate(data.inputDate)}</td>
       <td>${data.date21}</td>
       <td>${data.daysUntil21} ${data.daysUntil21 >= 0 ? 'remaining' : 'ago'}</td>
       <td>${data.date28}</td>
