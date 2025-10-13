@@ -96,11 +96,18 @@ function displaySavedDates() {
     </thead><tbody>`;
   
   arr.forEach((data, idx) => {
+    let xinputDate = new Date(data.inputDate);
+    let xdate21 = new Date(data.date21);
+    let xdate28 = new Date(data.date28);
+    xinputDate = formatDate(xinputDate);
+    xdate21 = formatDate(xdate21);
+    xdate28 = formatDate(xdate28);
+
     html += `<tr>
-      <td>${formatDate(data.inputDate)}</td>
-      <td>${data.date21}</td>
+      <td>${data.xinputDate}</td>
+      <td>${data.xdate21}</td>
       <td>${data.daysUntil21} ${data.daysUntil21 >= 0 ? 'remaining' : 'ago'}</td>
-      <td>${data.date28}</td>
+      <td>${data.xdate28}</td>
       <td>${data.daysUntil28} ${data.daysUntil28 >= 0 ? 'remaining' : 'ago'}</td>
       <td><button onclick="removeDate(${idx})">Remove</button></td>
     </tr>`;
