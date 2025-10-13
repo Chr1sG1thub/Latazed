@@ -83,7 +83,7 @@ function displaySavedDates() {
     div.innerHTML = "<p>No dates entered yet.</p>";
     return;
   }
-  let html = `<table style="font-size: 24px; font-family: arial">
+  let html = `<table style="font-size: 30px; font-family: arial">
     <thead>
       <tr>
         <th>Date</th>
@@ -130,7 +130,7 @@ window.onload = displaySavedDates;
 <body>
   <h2>Latazed</h2>
   
-  <label for="inputDate">Enter a date:</label>
+  <label style="font-size: 30px; font-family: arial" for="inputDate">Enter a date:</label>
   <input type="date" id="inputDate" />
   <button onclick="addDate()">Add Date</button>
 
