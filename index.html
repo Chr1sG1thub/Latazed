@@ -1,89 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Latazed</title>
-<style>
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-top: 1em;
-  }
-  th, td {
-    border: 1px solid #999;
-    padding: 0.5em 0em;
-    text-align: center;
-  }
-  th {
-    background-color: #eee;
-  }
-  button {
-    padding: 0.3em 0.6em;
-    cursor: pointer;
-  }
-</style>
-<script>
-function formatDate(date) {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-}
-function getDataArray() {
-  const arr = localStorage.getItem('dateCalcDataArray');
-  if (arr) return JSON.parse(arr);
-  return [];
-}
-
-function setDataArray(arr) {
-  localStorage.setItem('dateCalcDataArray', JSON.stringify(arr));
-}
-
-function calculateForDate(inputDateStr) {
-  const inputDate = new Date(inputDateStr);
-  const date21 = new Date(inputDate);
-  date21.setDate(date21.getDate() + 21);
-  const date28 = new Date(inputDate);
-  date28.setDate(date28.getDate() + 28);
-
-  const today = new Date();
-  const daysUntil21 = Math.floor((date21 - today) / (1000 * 60 * 60 * 24));
-  const daysUntil28 = Math.floor((date28 - today) / (1000 * 60 * 60 * 24));
-
-  return {
-    inputDate: inputDateStr,
-    date21: date21.toISOString().substring(0,10),
-    daysUntil21,
-    date28: date28.toISOString().substring(0,10),
-    daysUntil28
-  };
-}
-
-function addDate() {
-  const inputDateStr = document.getElementById('inputDate').value;
-  if(!inputDateStr) {
-    alert('Please enter a date.');
-    return;
-  }
-  let arr = getDataArray();
-  if (arr.some(entry => entry.inputDate === inputDateStr)) {
-    alert("Date already saved.");
-    return;
-  }
-  const data = calculateForDate(inputDateStr);
-  arr.push(data);
-  setDataArray(arr);
-  displaySavedDates();
-}
-
-function displaySavedDates() {
-  const arr = getDataArray();
-  const div = document.getElementById('savedDates');
-  if (!arr.length) {
-    div.innerHTML = "<p>No dates entered yet.</p>";
-    return;
-  }
-  let html = `<table style="font-size: 28px; font-family: arial">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Latazed</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 1em;
+      }
+      th, td {
+        border: 1px solid #999;
+        padding: 0.5em 0em;
+        text-align: center;
+      }
+      th {
+        background-color: #eee;
+      }
+      button {
+        padding: 0.3em 0.6em;
+        cursor: pointer;
+      }
+    </style>
+    
     <thead>
       <tr>
         <th>Date</th>
@@ -93,52 +32,117 @@ function displaySavedDates() {
         <th>E</th>
         <th>Remove</th>
       </tr>
-    </thead><tbody>`;
+    </thead>
+    <tbody>`;
+
+    <script>
+      function formatDate(date) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      }
+      function getDataArray() {
+        const arr = localStorage.getItem('dateCalcDataArray');
+        if (arr) return JSON.parse(arr);
+        return [];
+      }
+
+      function setDataArray(arr) {
+        localStorage.setItem('dateCalcDataArray', JSON.stringify(arr));
+      }
+
+      function calculateForDate(inputDateStr) {
+        const inputDate = new Date(inputDateStr);
+        const date21 = new Date(inputDate);
+        date21.setDate(date21.getDate() + 21);
+        const date28 = new Date(inputDate);
+        date28.setDate(date28.getDate() + 28);
+
+        const today = new Date();
+        const daysUntil21 = Math.floor((date21 - today) / (1000 * 60 * 60 * 24));
+        const daysUntil28 = Math.floor((date28 - today) / (1000 * 60 * 60 * 24));
+        
+        return {
+          inputDate: inputDateStr,
+          date21: date21.toISOString().substring(0,10),
+          daysUntil21,
+          date28: date28.toISOString().substring(0,10),
+          daysUntil28
+        };
+      }
+
+      function addDate() {
+        const inputDateStr = document.getElementById('inputDate').value;
+        if(!inputDateStr) {
+          alert('Please enter a date.');
+          return;
+        }
+        let arr = getDataArray();
+        if (arr.some(entry => entry.inputDate === inputDateStr)) {
+          alert("Date already saved.");
+          return;
+        }
+        const data = calculateForDate(inputDateStr);
+        arr.push(data);
+        setDataArray(arr);
+        displaySavedDates();
+      }
+
+      function displaySavedDates() {
+        const arr = getDataArray();
+        const div = document.getElementById('savedDates');
+        if (!arr.length) {
+          div.innerHTML = "<p>No dates entered yet.</p>";
+          return;
+        }
+        let html = `<table style="font-size: 28px; font-family: arial">
+
+        arr.forEach((data, idx) => {
+          let xinputDate = new Date(data.inputDate);
+          let xdate21 = new Date(data.date21);
+          let xdate28 = new Date(data.date28);
+          
+          xinputDate = formatDate(xinputDate);
+          xdate21 = formatDate(xdate21);
+          xdate28 = formatDate(xdate28);
+          let col28 = data.daysUntil28 > 0 ? "lightPink" : "lightGreen";
+          let col21 = data.daysUntil21 > 0 ? "lightPink" : "lightGreen";
+
+          html += `<tr>
+            <td>${xinputDate}</td>
+            <td style="background-color: ${col28}">${xdate28}</td>
+            <td style="background-color: ${col28}">${data.daysUntil28}</td>
+            <td style="background-color: ${col21}">${xdate21}</td>
+            <td style="background-color: ${col21}">${data.daysUntil21}</td>
+            <td><button onclick="removeDate(${idx})">-</button></td>
+            </tr>`;
+          });
   
-  arr.forEach((data, idx) => {
-    let xinputDate = new Date(data.inputDate);
-    let xdate21 = new Date(data.date21);
-    let xdate28 = new Date(data.date28);
-    xinputDate = formatDate(xinputDate);
-    xdate21 = formatDate(xdate21);
-    xdate28 = formatDate(xdate28);
-    let col28 = data.daysUntil28 > 0 ? "lightPink" : "lightGreen";
-    let col21 = data.daysUntil21 > 0 ? "lightPink" : "lightGreen";
+          html += `</tbody></table>`;
+          div.innerHTML = html;
+        }
 
-    html += `<tr>
-      <td>${xinputDate}</td>
-      <td style="background-color: ${col28}">${xdate28}</td>
-      <td style="background-color: ${col28}">${data.daysUntil28}</td>
-      <td style="background-color: ${col21}">${xdate21}</td>
-      <td style="background-color: ${col21}">${data.daysUntil21}</td>
-      <td><button onclick="removeDate(${idx})">-</button></td>
-    </tr>`;
-  });
+        function removeDate(index) {
+          let arr = getDataArray();
+          arr.splice(index, 1);
+          setDataArray(arr);
+          displaySavedDates();
+        }
+
+        window.onload = displaySavedDates;
+      </script>
+    </head>
+    <body>
+      <h1>Latazed</h1>
   
-  html += `</tbody></table>`;
-  div.innerHTML = html;
-}
+      <label style="font-size: 28px; font-family: arial" for="inputDate">Enter a date:</label>
+      <input style="font-size: 28px; font-family: arial" type="date" id="inputDate" />
+      <button style="font-size: 28px; font-family: arial" onclick="addDate()">Add Date</button>
 
-function removeDate(index) {
-  let arr = getDataArray();
-  arr.splice(index, 1);
-  setDataArray(arr);
-  displaySavedDates();
-}
-
-window.onload = displaySavedDates;
-</script>
-</head>
-<body>
-  <h1>Latazed</h1>
-  
-  <label style="font-size: 28px; font-family: arial" for="inputDate">Enter a date:</label>
-  <input style="font-size: 28px; font-family: arial" type="date" id="inputDate" />
-  <button style="font-size: 28px; font-family: arial" onclick="addDate()">Add Date</button>
-
-  <h2>Saved Dates:</h2>
-  <div id="savedDates"></div>
+      <h2>Saved Dates:</h2>
+      <div id="savedDates"></div>
 
 
-</body>
-</html>
+    </body>
+  </html>
