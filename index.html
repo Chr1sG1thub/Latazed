@@ -92,9 +92,9 @@ function displaySavedDates() {
     let today = new Date();
     let xinputDate = new Date(data.inputDate);
     let xdate21 = new Date(data.date21);
-    let col21 = data.date21 > today ? "lightpink" : "lightgreen";
+    let col21 = xdate21 > today ? "lightpink" : "lightgreen";
     let xdate28 = new Date(data.date28);
-    let col28 = data.date28 > today ? "lightpink" : "lightgreen";
+    let col28 = xdate28 > today ? "lightpink" : "lightgreen";
     xinputDate = formatDate(xinputDate);
     xdate21 = formatDate(xdate21);
     xdate28 = formatDate(xdate28);
