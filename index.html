@@ -89,17 +89,20 @@ function displaySavedDates() {
     </thead><tbody>`;
   
   arr.forEach((data, idx) => {
+    let today = new Date();
     let xinputDate = new Date(data.inputDate);
     let xdate21 = new Date(data.date21);
+    let col21 = data.date21 > today ? "lightpink" : "lightgreen";
     let xdate28 = new Date(data.date28);
+    let col28 = data.date28 > today ? "lightpink" : "lightgreen";
     xinputDate = formatDate(xinputDate);
     xdate21 = formatDate(xdate21);
     xdate28 = formatDate(xdate28);
 
     html += `<tr>
       <td>${xinputDate}</td>
-      <td>${xdate28}</td>
-      <td>${xdate21}</td>
+      <td style="font-color: ${col28}">${xdate28}</td>
+      <td style="font-color: ${col21}">${xdate21}</td>
       <td><button onclick="removeDate(${idx})">-</button></td>
     </tr>`;
   });
